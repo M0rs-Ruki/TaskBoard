@@ -5,26 +5,306 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title><%= title %> - Task Details</title>
   <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-zinc-900 text-white font-sans">
-
-  <div class="max-w-3xl mx-auto min-h-screen px-6 py-12">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            'primary-dark': '#4f46e5',
+            dark: {
+              900: '#0f172a',
+              800: '#1e293b',
+              700: '#334155',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+    }
     
-    <!-- Back Link -->
-    <a href="/" class="text-blue-500 hover:text-blue-400 text-sm inline-block mb-6 transition-all">
-      ← Back to Home
-    </a>
+    .task-header {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .task-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(79, 70, 229, 0.05) 100%);
+      z-index: 0;
+    }
+    
+    .task-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .tag {
+      transition: all 0.3s ease;
+    }
+    
+    .tag:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="text-white font-sans">
 
-    <!-- Task Container -->
-    <div class="bg-zinc-800 rounded-lg shadow-lg p-8">
-      <h1 class="text-3xl font-bold mb-4 border-b border-zinc-700 pb-2">
-        <%= title %>
-      </h1>
-      <p class="text-lg leading-relaxed text-zinc-300">
-        <%= task_details %>
-      </p>
+  <div class="max-w-4xl mx-auto min-h-screen px-4 py-8">
+    
+    <!-- Header with back button -->
+    <header class="flex justify-between items-center mb-8">
+      <a href="/" class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
+        <i class="fas fa-arrow-left mr-2"></i>
+        <span>Back to Tasks</span>
+      </a>
+      <div class="text-sm text-zinc-500">
+        <i class="far fa-calendar mr-1"></i>
+        <span>Last updated: Today</span>
+      </div>
+    </header>
+
+    <!-- Main Task Container -->
+    <div class="bg-dark-800 rounded-2xl shadow-xl overflow-hidden">
+      <!-- Task Header -->
+      <div class="task-header bg-gradient-to-r from-dark-800 to-dark-900 p-8">
+        <div class="task-content">
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div>
+              <span class="inline-block bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm mb-3 tag">
+                <i class="fas fa-tasks mr-1"></i> Active Task
+              </span>
+              <h1 class="text-3xl md:text-4xl font-bold mb-2">
+                <%= title %>
+              </h1>
+            </div>
+            <div class="flex space-x-2">
+              <button class="w-10 h-10 rounded-full bg-dark-700 hover:bg-blue-500 flex items-center justify-center transition-colors">
+                <i class="fas fa-edit text-blue-400"></i>
+              </button>
+              <button class="w-10 h-10 rounded-full bg-dark-700 hover:bg-emerald-500 flex items-center justify-center transition-colors">
+                <i class="fas fa-check text-emerald-400"></i>
+              </button>
+              <button class="w-10 h-10 rounded-full bg-dark-700 hover:bg-rose-500 flex items-center justify-center transition-colors">
+                <i class="fas fa-trash text-rose-400"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap gap-4 mb-6">
+            <div class="flex items-center">
+              <div class="w-10 h-10 rounded-full bg-dark-700 flex items-center justify-center mr-3">
+                <i class="far fa-calendar text-blue-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-zinc-400">Created</p>
+                <p class="font-medium">June 15, 2023</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center">
+              <div class="w-10 h-10 rounded-full bg-dark-700 flex items-center justify-center mr-3">
+                <i class="far fa-clock text-amber-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-zinc-400">Due Date</p>
+                <p class="font-medium">June 20, 2023</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center">
+              <div class="w-10 h-10 rounded-full bg-dark-700 flex items-center justify-center mr-3">
+                <i class="fas fa-tag text-purple-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-zinc-400">Category</p>
+                <p class="font-medium">Work</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Task Content -->
+      <div class="p-8">
+        <div class="flex items-center mb-6">
+          <div class="h-px bg-zinc-700 flex-1"></div>
+          <h2 class="px-4 text-lg font-semibold text-zinc-400">Task Details</h2>
+          <div class="h-px bg-zinc-700 flex-1"></div>
+        </div>
+        
+        <div class="bg-dark-700 rounded-xl p-6 mb-8">
+          <p class="text-lg leading-relaxed text-zinc-200 mb-0">
+            <%= task_details %>
+          </p>
+        </div>
+        
+        <!-- Subtasks Section -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-4 flex items-center">
+            <i class="fas fa-list-check mr-3 text-blue-400"></i> Subtasks
+          </h3>
+          
+          <div class="space-y-3">
+            <div class="flex items-center bg-dark-700 p-4 rounded-lg">
+              <input type="checkbox" class="h-5 w-5 text-blue-500 rounded mr-4" id="subtask1">
+              <label for="subtask1" class="flex-1 text-zinc-200">Research competitors and market trends</label>
+              <button class="text-zinc-500 hover:text-rose-500 ml-2">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            
+            <div class="flex items-center bg-dark-700 p-4 rounded-lg">
+              <input type="checkbox" class="h-5 w-5 text-blue-500 rounded mr-4" id="subtask2" checked>
+              <label for="subtask2" class="flex-1 text-zinc-200 line-through text-zinc-500">Create presentation outline</label>
+              <button class="text-zinc-500 hover:text-rose-500 ml-2">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            
+            <div class="flex items-center bg-dark-700 p-4 rounded-lg">
+              <input type="checkbox" class="h-5 w-5 text-blue-500 rounded mr-4" id="subtask3">
+              <label for="subtask3" class="flex-1 text-zinc-200">Prepare financial projections</label>
+              <button class="text-zinc-500 hover:text-rose-500 ml-2">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="mt-4 flex">
+            <input 
+              type="text" 
+              placeholder="Add a subtask..." 
+              class="flex-1 bg-dark-800 border border-zinc-700 rounded-l-lg px-4 py-2 focus:outline-none focus:border-blue-500"
+            >
+            <button class="bg-blue-500 hover:bg-blue-600 px-4 rounded-r-lg transition-colors">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Attachments Section -->
+        <div>
+          <h3 class="text-xl font-semibold mb-4 flex items-center">
+            <i class="fas fa-paperclip mr-3 text-amber-400"></i> Attachments
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-dark-700 rounded-lg p-4 flex items-center">
+              <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mr-4">
+                <i class="fas fa-file-pdf text-blue-400 text-xl"></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-medium mb-1">Project_Specs.pdf</p>
+                <p class="text-sm text-zinc-500">2.4 MB • Added yesterday</p>
+              </div>
+              <button class="text-blue-400 hover:text-blue-300 ml-2">
+                <i class="fas fa-download"></i>
+              </button>
+            </div>
+            
+            <div class="bg-dark-700 rounded-lg p-4 flex items-center">
+              <div class="w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center mr-4">
+                <i class="fas fa-file-image text-amber-400 text-xl"></i>
+              </div>
+              <div class="flex-1">
+                <p class="font-medium mb-1">Wireframes.png</p>
+                <p class="text-sm text-zinc-500">1.1 MB • Added 3 days ago</p>
+              </div>
+              <button class="text-blue-400 hover:text-blue-300 ml-2">
+                <i class="fas fa-download"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <button class="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors">
+              <i class="fas fa-plus mr-2"></i> Add Attachment
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-
+    
+    <!-- Activity Timeline -->
+    <div class="mt-8 bg-dark-800 rounded-2xl shadow-xl p-8">
+      <h3 class="text-xl font-semibold mb-6 flex items-center">
+        <i class="fas fa-history mr-3 text-purple-400"></i> Activity
+      </h3>
+      
+      <div class="space-y-6">
+        <div class="flex">
+          <div class="flex flex-col items-center mr-4">
+            <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+              <i class="fas fa-plus text-blue-400"></i>
+            </div>
+            <div class="h-full w-0.5 bg-zinc-700 mt-2"></div>
+          </div>
+          <div class="pb-6 flex-1">
+            <p class="font-medium">Task created</p>
+            <p class="text-sm text-zinc-500 mb-2">You created this task</p>
+            <p class="text-sm text-zinc-400">Today, 10:30 AM</p>
+          </div>
+        </div>
+        
+        <div class="flex">
+          <div class="flex flex-col items-center mr-4">
+            <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+              <i class="fas fa-edit text-purple-400"></i>
+            </div>
+            <div class="h-full w-0.5 bg-zinc-700 mt-2"></div>
+          </div>
+          <div class="pb-6 flex-1">
+            <p class="font-medium">Details updated</p>
+            <p class="text-sm text-zinc-500 mb-2">You updated the description</p>
+            <p class="text-sm text-zinc-400">Today, 11:45 AM</p>
+          </div>
+        </div>
+        
+        <div class="flex">
+          <div class="flex flex-col items-center mr-4">
+            <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center">
+              <i class="fas fa-paperclip text-amber-400"></i>
+            </div>
+            <div class="h-full w-0.5 bg-zinc-700 mt-2"></div>
+          </div>
+          <div class="pb-6 flex-1">
+            <p class="font-medium">Attachment added</p>
+            <p class="text-sm text-zinc-500 mb-2">You added Project_Specs.pdf</p>
+            <p class="text-sm text-zinc-400">Today, 1:20 PM</p>
+          </div>
+        </div>
+        
+        <div class="flex">
+          <div class="flex flex-col items-center mr-4">
+            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+              <i class="fas fa-check text-emerald-400"></i>
+            </div>
+          </div>
+          <div class="pb-2 flex-1">
+            <p class="font-medium">Subtask completed</p>
+            <p class="text-sm text-zinc-500 mb-2">You completed "Create presentation outline"</p>
+            <p class="text-sm text-zinc-400">Today, 3:15 PM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="mt-12 text-center text-zinc-500 text-sm">
+      <p>© 2023 Task Manager. All rights reserved.</p>
+    </footer>
   </div>
 
 </body>
