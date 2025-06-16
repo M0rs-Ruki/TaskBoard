@@ -67,25 +67,44 @@ app.post('/files/:title/delete', (req, res) => {
 // Edit task form
 app.get('/files/:title/edit', (req, res) => {
   fs.readFile(`./files/${req.params.title}`, 'utf-8', (err, fileData) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      return res.status(404).send('Task not found');
+    }
+    
     res.render('edit', {
       oldTitle: req.params.title,
-      task_details: fileData
+      task_details: fileData  // Ensure this is being passed correctly
     });
   });
 });
 
-// Rename task route
+// Update the rename route to handle content updates
 app.post('/files/:title/rename', (req, res) => {
-  const oldPath = `./files/${req.params.title}`;
-  const newPath = `./files/${req.body.title.split(' ').join('')}.txt`;
-
-  fs.rename(oldPath, newPath, (err) => {
-    if (err) {
-      console.error('Error renaming file:', err);
-      return res.status(500).send('Error renaming task');
-    }
-    res.redirect(`/files/${req.body.title.split(' ').join('')}.txt`);
-  });
+    const oldPath = `./files/${req.params.title}`;
+    const newTitle = req.body.title.split(' ').join('') + '.txt'; // Add .txt extension
+    const newPath = `./files/${newTitle}`;
+    
+    // First, update the file content
+    fs.writeFile(oldPath, req.body.task_details, (writeErr) => {
+        if (writeErr) {
+            console.error('Error updating content:', writeErr);
+            return res.status(500).send('Error updating task content');
+        }
+        
+        // Then rename if title changed
+        if (oldPath !== newPath) {
+            fs.rename(oldPath, newPath, (renameErr) => {
+                if (renameErr) {
+                    console.error('Error renaming file:', renameErr);
+                    return res.status(500).send('Error renaming task');
+                }
+                res.redirect(`/files/${newTitle}`);
+            });
+        } else {
+            res.redirect(`/files/${req.params.title}`);
+        }
+    });
 });
 
 app.listen(port, () => {
